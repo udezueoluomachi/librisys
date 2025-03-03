@@ -1,20 +1,41 @@
 "use client";
 import React, { useState } from 'react';
 import Header from '@/components/header';
+import toast, { Toaster } from 'react-hot-toast';
 
 const SearchPage = () => {
     const [searchResults, setSearchResults] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [searched, setSearched] = useState(false);
+    const [searching, setSearching] = useState(false);
 
     const handleSearch = async () => {
-        // Implement search logic here
-        // Example: setSearchResults(await fetchBooks(searchQuery));
+        try {
+            setSearching(true)
+            const response = await fetch(`https://openlibrary.org/search.json?q=${searchQuery}`);
+            const data = await response.json();
+            const books = data.docs.map(book => ({
+                title: book.title,
+                author: book.author_name ? book.author_name.join(', ') : 'Unknown Author',
+                description: book.first_sentence ? book.first_sentence[0] : 'No description available',
+                image: book.cover_i ? `https://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg` : null
+            }));
+            setSearchResults(books);
+            toast("Success", {position : "top-center"})
+        }
+        catch(error ) {
+           toast.error("Something went wrong", {position : "top-center"})
+        }
+        finally {
+            setSearching(false)
+            setSearched(true)
+        }
     };
 
     return (
         <div className="min-h-screen bg-gray-100">
             <Header />
+            <Toaster />
             <div className="container mx-auto px-10 md:px-[140px] py-4">
                 <div className="mb-4 flex flex-col sm:flex-row items-center">
                     <input
@@ -28,12 +49,15 @@ const SearchPage = () => {
                                 handleSearch();
                             }
                         }}
+                        disabled={searching}
                     />
                     <button
                         onClick={handleSearch}
-                        className="w-full sm:w-auto p-2 bg-primary text-white rounded"
+                        disabled={searching}
+                        className="w-full sm:w-auto p-2 bg-primary text-white rounded text-center"
                     >
-                        Search
+                        {searching ? <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="18" cy="12" r="0" fill="currentColor"><animate attributeName="r" begin=".67" calcMode="spline" dur="1.5s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0"/></circle><circle cx="12" cy="12" r="0" fill="currentColor"><animate attributeName="r" begin=".33" calcMode="spline" dur="1.5s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0"/></circle><circle cx="6" cy="12" r="0" fill="currentColor"><animate attributeName="r" begin="0" calcMode="spline" dur="1.5s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0"/></circle></svg> : 
+                        "Search"}
                     </button>
                 </div>
                 {searchResults.length > 0 ? (
