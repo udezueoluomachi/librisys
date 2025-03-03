@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="w-full h-full bg-[url('/blob-scene.svg')] bg-cover bg-center">
+    <div className="w-full h-full bg-[url('/blob-scene.svg')] bg-cover bg-center bg-no-repeat">
       <Header />
       <main>
         <section className="px-10 md:px-[140px]">
