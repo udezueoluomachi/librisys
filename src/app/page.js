@@ -15,8 +15,8 @@ export default function Home() {
               </h1>
               <p className="text-base font-medium text-gray-900">Your one-stop tool for finding, checking availability, and borrowing books. Effortlessly search our extensive database, verify your membership, and take home your next favorite read.</p>
               <div className="flex flex-col md:flex-row space-x-0 md:space-x-3 space-y-3 md:space-y-0 mt-7">
-                <Link href={"join"} className="w-max py-2 md:py-4 md:px-8 px-4 rounded-full bg-primary text-white text-base">Become a member</Link>
-                <Link href={"/search"} className="w-max py-2 md:py-4 md:px-8 px-4 rounded-full bg-secondary text-white text-base">Find Books</Link>
+                <Link href={"join"} className="hover:ring-2 hover:ring-current w-max py-2 md:py-4 md:px-8 px-4 rounded-full bg-slate-300 text-secondary text-base" title="register">Become a member</Link>
+                <Link href={"/search"} className="hover:ring-2 hover:ring-primary w-max py-2 md:py-4 md:px-8 px-4 rounded-full bg-secondary text-white text-base" title="search">Find Books</Link>
               </div>
             </div>
             <div className="w-full md:w-1/2">
